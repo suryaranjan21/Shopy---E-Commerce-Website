@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="home.html">Surya Store</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="products.html">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="services.html">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cart.html">Cart <span id="cart-count" class="badge badge-primary">0</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container my-5">
+        <h1 class="text-center">Our Products</h1>
+
+        <!-- Search bar -->
+        <div class="search-bar mb-4">
+            <input type="text" id="search-input" class="form-control" placeholder="Search for products...">
+        </div>
+
+        <div class="row" id="product-list">
+            <!-- Products will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Modal for "Know More" -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Product Details</h5>
+                </div>
+                <div class="modal-body">
+                    <h5 id="modalProductName"></h5>
+                    <p id="modalProductDescription"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Define an array of products
+            const products = [
+            { id: 1, name: "Modern Minimalist Smartwatches", price: 1200, image: "1.jpeg", description: "A sleek, minimalist smartwatch with a circular display and white straps, displayed from both front and back angles. The clean and modern look emphasizes simplicity and elegance." },
+                { id: 2, name: "Elegant Brown Leather Saddle Bag", price: 2500, image: "2.jpeg", description: "The image showcases an elegant brown leather saddle bag with a long strap, designed for crossbody wear. The bag features a unique, curved flap closure with a small gold button on the right side. A decorative leather strap with a gold buckle detail hangs from the front, adding a touch of sophistication. The craftsmanship and design suggest a high-quality, stylish accessory suitable for various occasions. The background is a gradient of dark to light grey, which highlights the bag and emphasizes its luxurious appearance." },
+                { id: 3, name: "Modern Headphones with Red and Black Design", price: 900, image: "3.jpeg", description: "Over-ear headphones with black and coral-colored ear cushions. The design combines functionality with bold aesthetic choices, making them suitable for casual and professional use." },
+                { id: 4, name: "Chanel No. 5 Eau de Parfum Bottle", price: 4000, image: "4.jpeg", description: "The image shows a bottle of Chanel No. 5 Eau de Parfum. The bottle is rectangular with a clear, faceted cap and contains a peach-colored liquid. The label on the front of the bottle reads N° 5 CHANEL EAU DE PARFUM. This iconic perfume is known for its timeless and classic fragrance, making it a significant and recognizable product in the world of luxury perfumes" },
+                { id: 5, name: "Ray-Ban Classic Black Sunglasses", price: 1500, image: "5.jpeg", description: "The image shows a pair of classic black Ray-Ban sunglasses with dark lenses. The sunglasses have a slightly curved frame and thick arms, with the Ray-Ban logo visible on the upper corner of the right lens and on the arms. The image is in black and white, highlighting the timeless and iconic design of these popular accessories." },
+                { id: 6, name: "Green Cylindrical Bottle", price: 600, image: "6.jpeg", description: "The bottle has a smooth, matte finish and is standing upright on a white surface against a plain white background. There are no visible labels or markings on the bottle, showcasing a minimalist design." },
+                { id: 7, name: "Maroon Sneaker with White Laces", price: 750, image: "7.jpeg", description: "The image shows a single maroon sneaker with white laces and a white sole, suspended in mid-air against a bright yellow background. The sneaker has a distinctive white stripe design on the side, making it visually striking and interesting." },
+                { id: 8, name: "Ceramic Vessels on Wooden Platform", price: 1400, image: "8.jpeg", description: "The image shows a collection of four ceramic vessels placed on a circular, ribbed wooden platform. The vessels include a tall, black vase, a medium-sized blue vase, a smaller red vase, and a small white bowl. The arrangement and textures create a visually appealing composition against a gradient beige background." },
+                { id: 9, name: "Beige Notebook with Gold Print", price: 190, image: "9.jpeg", description: "Beige-colored notebook standing upright on a wooden shelf against a white textured wall. The notebook has the words HELLO REVIVAL printed in gold on the cover. An elastic band is wrapped around the right side of the notebook, likely to keep it closed. The overall design is simple and elegant" },
+                { id: 10, name: "Classic Analog Alarm Clock", price: 600, image: "10.jpeg", description: "The clock has two bells on top and a hammer in between them, which is typical for traditional alarm clocks. The hands of the clock indicate the time as approximately 10:10. The clock is set against a plain white background, making it the focal point of the image. This type of clock is interesting because it represents a traditional design that has been used for many years and is often associated with a nostalgic or vintage aesthetic." },
+                { id: 11, name: "White Cassette Tape", price: 1100, image: "11.jpeg", description: "White cassette tape with two visible spools and a small window in the center. The tape is labeled SIDE 1 on the left side. This minimalist design is a nostalgic reminder of retro audio technology used before digital media became prevalent." },
+                { id: 12, name: "Vintage Yellow Rotary Dial Telephone", price: 5000, image: "12.jpeg", description: "The telephone has a coiled cord connecting the handset to the base. The rotary dial features numbers and letters, which were used to dial phone numbers manually. The background is also yellow, creating a monochromatic and visually striking appearance. This image is interesting because it showcases a piece of technology that was widely used in the past but has since been replaced by modern telecommunication devices." },
+                { id: 13, name: "Tennis Racket on Blue Court", price: 1300, image: "13.jpeg", description: "The racket has a white frame with black strings and a black grip. The court surface has some scattered debris, such as leaves and small pieces of trash, adding a touch of realism to the scene. The contrast between the blue court and the white lines and racket makes the image visually striking." },
+                { id: 14, name: "Assorted Color Permanent Markers", price: 250, image: "14.jpeg", description: "A set of six vibrant permanent markers, arranged neatly in a row. The markers feature colorful caps, ranging from pink, orange, yellow, green, blue, to purple. They are designed for a variety of surfaces and labeled as water- and fade-resistant, ideal for creative or professional use." },
+                { id: 15, name: "White Gaming Controller with Black Buttons", price: 6000, image: "15.jpeg", description: "The controller has a modern design with two analog sticks, a directional pad (D-pad), and several buttons including A, B, X, Y, and others. The analog sticks have orange accents around them. This image is interesting because it depicts a piece of gaming hardware that is essential for playing video games on various platforms." }
+            ];
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            const updateCartCount = () => {
+                $('#cart-count').text(cart.length);
+            };
+
+            // Function to render products
+            const renderProducts = (searchTerm = '') => {
+                $('#product-list').empty();
+
+                // Filter products based on the search term
+                const filteredProducts = products.filter(product =>
+                    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+
+                // Render filtered products
+                filteredProducts.forEach(product => {
+                    const productCard = `
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${product.name}</h5>
+                                    <p class="card-text">₨ ${product.price}</p>
+                                    <button class="btn btn-primary add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}">
+                                        Add to Cart
+                                    </button>
+                                    <button class="btn btn-info know-more" data-id="${product.id}" data-name="${product.name}" data-description="${product.description}">
+                                        Know More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                    $('#product-list').append(productCard);
+                });
+
+                if (filteredProducts.length === 0) {
+                    $('#product-list').append('<p class="text-center">No products found.</p>');
+                }
+            };
+
+            // Add product to cart
+            $(document).on('click', '.add-to-cart', function () {
+                const product = {
+                    id: $(this).data('id'),
+                    name: $(this).data('name'),
+                    price: $(this).data('price'),
+                    quantity: 1
+                };
+                const existing = cart.find(item => item.id === product.id);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push(product);
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                alert('Product added to cart');
+            });
+
+            // Display product details on "Know More"
+            $(document).on('click', '.know-more', function () {
+                const name = $(this).data('name');
+                const description = $(this).data('description');
+                $('#modalProductName').text(name);
+                $('#modalProductDescription').text(description);
+                $('#productModal').modal('show');
+            });
+
+            // Search functionality
+            $('#search-input').on('input', function () {
+                const searchTerm = $(this).val();
+                renderProducts(searchTerm);
+            });
+
+            // Initialize
+            renderProducts();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>
